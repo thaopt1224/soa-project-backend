@@ -16,6 +16,7 @@ services:
       - DB_PORT=${DB_PORT:-5432}
       - DB_NAME=${DB_NAME:-dev}
       - SECRET_KEY=my_precious
+      - RESET_DB=true
       - PORT=${PORT:-80}
     depends_on:
       - db

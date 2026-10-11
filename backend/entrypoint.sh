@@ -15,9 +15,11 @@ done
 echo "PostgreSQL started"
 
 
-# Chạy setup_db với debug
-
-python manage.py recreate_db
-python manage.py seed_db
+# Chỉ reset + seed DB khi RESET_DB=true (docker-compose-dev / migrate qua bastion).
+# ECS không set biến này → task restart/autoscale không xoá dữ liệu trên RDS.
+if [ "${RESET_DB:-false}" = "true" ]; then
+    python manage.py recreate_db
+    python manage.py seed_db
+fi
 
 gunicorn -b 0.0.0.0:$PORT manage:app
